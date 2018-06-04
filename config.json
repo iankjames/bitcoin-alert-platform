@@ -1,0 +1,26 @@
+{
+	"api": {
+		"port": 3000
+	},
+	"db": {
+		"url": "mongodb://localhost:27017",
+		"database": "bitcoin"
+	},
+	"priceMonitor": {
+		"intervalMs": 5000,
+		"bitcoinPriceUrl": "https://api.coindesk.com/v1/bpi/currentprice/USD.json"
+	},
+	"notifier": {
+		"smtp": {
+			"host": "smtp.mailgun.org",
+			"port": 587,
+			"pool": true,
+			"auth": {
+				"user": "bitcoin-api@mg.ianjt.com",
+				"pass": "3478139b-6db4-89b1-d1bc2ebaac2c"
+			}
+		},
+		"from": "no-reply@mg.ianjt.com",
+		"subject": "Bitcoin Price Alert"
+	}
+}

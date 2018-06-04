@@ -1,0 +1,28 @@
+#!/bin/bash
+
+cleanup()
+{
+	echo "Signal caught - cleaning-up..."
+	
+	# Kill/shutdown DB container
+	docker stop bitcoin-alert-mongo
+
+	echo "Done cleaning-up - quitting"
+  exit 1
+}
+
+# Capture any signal that interrupts, or ends the full demo to
+# ensure that any and all services are stopped + cleaned-up
+trap cleanup 0 1 2 3 4 6 15 20
+
+# Start required DB container
+# NOTE: Remove '--rm' flag if it is desired to inspect the volume/filesystem
+# of the mongo server container after test run (e.g., to inspect what's there
+# if something fails)
+docker run --name bitcoin-alert-mongo -d --rm -p 27017:27017 mongo
+
+# Arbitrary wait to ensure DB container has initialized
+# TODO: There's a better way to do this, I assume...
+sleep 2
+
+node ./demo/end-to-end.js $1
